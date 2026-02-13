@@ -9,6 +9,8 @@ The basic matching strategy returns the highest scoring picto according to cosin
 
 A more advanced strategy requires lemma and definitions for a hypernym and a salient property that are used if the concept is not found in the lexicon. This depends on the quality of the generated definitions and descriptions.
 
+![Screenshot of the demo with resolved pictograms](assets/viewer.png "Screenshot of the demo with resolved pictograms")
+
 # Dependencies
 
 Install requirements
@@ -63,6 +65,21 @@ The result is stored in columns "pictos" (json string representing the list of p
 ```
 python resolver.py inference resolver_arasaac.pt common-voice_generated.parquet common-voice_resolved.parquet
 ```
+
+# Demo
+
+Open a web browser on http://localhost:8080 and visualize the contents of the parquet results:
+```
+python show_parquet.py common-voice_resolved.parquet
+```
+This uses the columns:
+- `text`: original sentence
+- `pictos`: ids of the pictos, mapped to the arasaac website images
+- `tokens`: lemmas which have been matched by the resolver
+- `llm_pictos`: input of the resolver (if present)
+- `resolved`: output of the resolver (if present)
+
+This script can also use a huggingface dataset of the same format by specifying its id instead of a parquet file on command line.
 
 # API
 
@@ -148,3 +165,4 @@ Simply removes consecutive duplicates and pictos with a score bellow a threshold
 ```
 resolver.post_process(results, threshold=0.2, remove_dupes=True)
 ```
+
